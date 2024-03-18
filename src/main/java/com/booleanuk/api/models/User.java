@@ -28,6 +28,14 @@ public class User {
 
     @NotBlank
     @Size(max = 20)
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 20)
+    private String lastName;
+
+    @NotBlank
+    @Size(max = 20)
     private String username;
 
     @NotBlank
@@ -39,27 +47,26 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @NotBlank
+    @Size(max = 10)
+    private String favoriteColor;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_friends",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "friend_id")
-    )
-    private Set<User> friends = new HashSet<>();
-
     @OneToMany(mappedBy = "user")
     @JsonIgnoreProperties(value = {"id", "user"})
-    public List<Post> posts;
+    public List<RecipePost> recipePosts;
 
-    public User(String username, String email, String password) {
+    public User(String firstName, String lastName, String username, String email, String password, String favoriteColor) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.favoriteColor = favoriteColor;
     }
 }

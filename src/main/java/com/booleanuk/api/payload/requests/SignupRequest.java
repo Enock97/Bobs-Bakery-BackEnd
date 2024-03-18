@@ -25,4 +25,16 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
+    @NotBlank
+    @Size(max = 20)
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 20)
+    private String lastName;
+
+    @NotBlank
+    @Size(max = 10)
+    private String favoriteColor;
+
 }
