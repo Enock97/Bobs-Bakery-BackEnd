@@ -59,12 +59,14 @@ public class WebSecurityConfig {
                 .exceptionHandling((exception) -> exception.authenticationEntryPoint(this.unauthorizedHandler))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/auth/**").permitAll() // Allow unauthenticated access to authentication endpoints
-                        .requestMatchers(HttpMethod.GET,"/posts", "/posts/*").authenticated() // All authenticated users can view posts
-                        .requestMatchers(HttpMethod.POST, "/posts","/posts/**").authenticated() // All authenticated users can create posts and perform post-related actions (like, comment, repost)
-                        .anyRequest().authenticated() // All other requests require authentication, for the Post class' PUT and DELETE request, the user's authentication details need to match the
-                                                      // creator of the post's authentication details as coded in those requests' methods
+                        .requestMatchers("/auth/**").permitAll() // Allows unauthenticated access to authentication endpoints
+                        .requestMatchers(HttpMethod.GET, "/users/**", "/posts/**", "/posts/*/reviews/**").permitAll() // Allow read access to anyone
+                        .requestMatchers(HttpMethod.POST, "/posts", "/posts/*/reviews").authenticated() // Authenticated users can create posts and reviews
+                        .requestMatchers(HttpMethod.PUT, "/posts/*", "/posts/*/reviews/*").authenticated() // Assume authenticated users can only update their own posts/reviews
+                        .requestMatchers(HttpMethod.DELETE, "/posts/*", "/posts/*/reviews/*").authenticated() // Assume authenticated users can only delete their own posts/reviews
+                        .anyRequest().authenticated()
                 );
+
         http.authenticationProvider(this.authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

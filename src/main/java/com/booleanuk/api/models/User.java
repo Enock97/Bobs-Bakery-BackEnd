@@ -61,6 +61,10 @@ public class User {
     @JsonIgnoreProperties(value = {"id", "user"})
     public List<RecipePost> recipePosts;
 
+    @OneToMany(mappedBy = "review")
+    @JsonIgnoreProperties(value = {"id", "review"})
+    public List<Review> reviews;
+
     public User(String firstName, String lastName, String username, String email, String password, String favoriteColor) {
         this.firstName = firstName;
         this.lastName = lastName;

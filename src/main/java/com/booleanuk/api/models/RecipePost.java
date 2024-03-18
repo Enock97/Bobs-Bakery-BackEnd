@@ -1,11 +1,13 @@
 package com.booleanuk.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -44,6 +46,12 @@ public class RecipePost {
     @JoinColumn(name = "user_id", nullable = false )
     @JsonIncludeProperties(value = {"id"})
     private User user;
+
+    @OneToMany(mappedBy = "reviews")
+    @JsonIgnoreProperties(value = {"id", "review"})
+    public List<Review> reviews;
+
+
 
     public RecipePost(String title, ArrayList<String> ingredients, ArrayList<String> instructions, String category, int bakingTime, int calories, String difficulty, ArrayList<String> recipeTags) {
         this.title = title;
