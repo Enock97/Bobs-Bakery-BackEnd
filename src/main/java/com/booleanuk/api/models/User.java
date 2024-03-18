@@ -28,14 +28,6 @@ public class User {
 
     @NotBlank
     @Size(max = 20)
-    private String firstName;
-
-    @NotBlank
-    @Size(max = 20)
-    private String lastName;
-
-    @NotBlank
-    @Size(max = 20)
     private String username;
 
     @NotBlank
@@ -46,6 +38,14 @@ public class User {
     @NotBlank
     @Size(max = 120)
     private String password;
+
+    @NotBlank
+    @Size(max = 20)
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 20)
+    private String lastName;
 
     @NotBlank
     @Size(max = 10)
@@ -61,16 +61,16 @@ public class User {
     @JsonIgnoreProperties(value = {"id", "user"})
     public List<RecipePost> recipePosts;
 
-    @OneToMany(mappedBy = "review")
-    @JsonIgnoreProperties(value = {"id", "review"})
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties(value = {"id", "user"})
     public List<Review> reviews;
 
-    public User(String firstName, String lastName, String username, String email, String password, String favoriteColor) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String username, String email, String password, String firstName, String lastName, String favoriteColor) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.favoriteColor = favoriteColor;
     }
 }

@@ -69,6 +69,17 @@ public class UserController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
 
+        // Get the current authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Check if the current user is the owner of the post
+        if (!existingUser.getUsername().equals(currentPrincipalName)) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("Unauthorized to delete this user");
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+
         // Update the post
         existingUser.setUsername(user.getUsername());
         existingUser.setFirstName(user.getFirstName());
@@ -89,6 +100,17 @@ public class UserController {
             ErrorResponse error = new ErrorResponse();
             error.set("No user with that id were found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+
+        // Get the current authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Check if the current user is the owner of the post
+        if (!userToDelete.getUsername().equals(currentPrincipalName)) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("Unauthorized to delete this user");
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
         }
 
         this.userRepository.delete(userToDelete);

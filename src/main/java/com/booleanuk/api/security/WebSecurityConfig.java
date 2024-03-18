@@ -60,10 +60,13 @@ public class WebSecurityConfig {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll() // Allows unauthenticated access to authentication endpoints
-                        .requestMatchers(HttpMethod.GET, "/users/**", "/posts/**", "/posts/*/reviews/**").permitAll() // Allow read access to anyone
+                        .requestMatchers(HttpMethod.GET, "/posts/**", "/posts/*/reviews/**").permitAll() // Allow read access to anyone
                         .requestMatchers(HttpMethod.POST, "/posts", "/posts/*/reviews").authenticated() // Authenticated users can create posts and reviews
                         .requestMatchers(HttpMethod.PUT, "/posts/*", "/posts/*/reviews/*").authenticated() // Assume authenticated users can only update their own posts/reviews
                         .requestMatchers(HttpMethod.DELETE, "/posts/*", "/posts/*/reviews/*").authenticated() // Assume authenticated users can only delete their own posts/reviews
+                        .requestMatchers(HttpMethod.GET, "/users/*", "/users/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/*").hasAuthority("ROLE_ADMIN") // Assume authenticated users can only update their own posts/reviews
+                        .requestMatchers(HttpMethod.DELETE, "/users/*").hasAuthority("ROLE_ADMIN") // Assume authenticated users can only delete their own posts/reviews
                         .anyRequest().authenticated()
                 );
 

@@ -44,11 +44,11 @@ public class RecipePost {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
-    @JsonIncludeProperties(value = {"id"})
+    @JsonIncludeProperties(value = {"id", "firstName", "lastName"})
     private User user;
 
-    @OneToMany(mappedBy = "reviews")
-    @JsonIgnoreProperties(value = {"id", "review"})
+    @OneToMany(mappedBy = "recipePost")
+    @JsonIgnoreProperties(value = {"id", "recipePost"})
     public List<Review> reviews;
 
 

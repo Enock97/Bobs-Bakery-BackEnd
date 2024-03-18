@@ -31,7 +31,7 @@ public class ReviewController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
         ReviewListResponse reviewListResponse = new ReviewListResponse();
-        reviewListResponse.set(reviewRepository.findByPostId(postId));
+        reviewListResponse.set(reviewRepository.findByRecipePostId(postId));
         return ResponseEntity.ok(reviewListResponse);
     }
 
@@ -64,7 +64,7 @@ public class ReviewController {
             error.set("No recipe post with that id found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
-        Review review = reviewRepository.findByIdAndPostId(reviewId, postId).orElse(null);
+        Review review = reviewRepository.findByIdAndRecipePostId(reviewId, postId).orElse(null);
         if (review == null) {
             ErrorResponse error = new ErrorResponse();
             error.set("No recipe post or review with that id found");
@@ -76,13 +76,13 @@ public class ReviewController {
     }
 
     @PutMapping("/{reviewId}")
-    public ResponseEntity<Response<?>> updateReviewByIdAndPostId(@PathVariable int postId, @PathVariable int reviewId, @RequestBody Review reviewDetails) {
+    public ResponseEntity<Response<?>> updateReviewByIdAndRecipePostId(@PathVariable int postId, @PathVariable int reviewId, @RequestBody Review reviewDetails) {
         if (!this.recipePostRepository.existsById(postId)) {
             ErrorResponse error = new ErrorResponse();
             error.set("No recipe post with that id found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
-        Review existingReview = this.reviewRepository.findByIdAndPostId(reviewId, postId).orElse(null);
+        Review existingReview = this.reviewRepository.findByIdAndRecipePostId(reviewId, postId).orElse(null);
         if (existingReview == null) {
             ErrorResponse error = new ErrorResponse();
             error.set("No recipe post or review with that id found");
@@ -114,13 +114,13 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Response<?>> deleteReviewByIdAndPostId(@PathVariable int postId, @PathVariable int reviewId) {
+    public ResponseEntity<Response<?>> deleteReviewByIdAndRecipePostId(@PathVariable int postId, @PathVariable int reviewId) {
         if (!this.recipePostRepository.existsById(postId)) {
             ErrorResponse error = new ErrorResponse();
             error.set("No recipe post with that id found");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
-        Review reviewToDelete = this.reviewRepository.findByIdAndPostId(reviewId, postId).orElse(null);
+        Review reviewToDelete = this.reviewRepository.findByIdAndRecipePostId(reviewId, postId).orElse(null);
         if (reviewToDelete == null) {
             ErrorResponse error = new ErrorResponse();
             error.set("No recipe post or review with that id found");

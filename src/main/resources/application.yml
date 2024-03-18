@@ -6,6 +6,22 @@ server:
     include-stacktrace: never
     include-exception: false
 
+spring:
+  datasource:
+    url: jdbc:postgresql://tyke.db.elephantsql.com:5432/miiplfgl
+    username: miiplfgl
+    password: CToOm5sM8dJb1B6X6NiRVx73NhEKYjKu
+    max-active: 5
+    max-idle: 5
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
 booleanuk:
   app:
     jwtSecret: ===============================BooleanUK=Spring==============================================

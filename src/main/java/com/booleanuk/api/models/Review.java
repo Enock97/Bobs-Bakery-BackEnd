@@ -25,12 +25,12 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
-    @JsonIncludeProperties(value = {"id"})
+    @JsonIncludeProperties(value = {"id", "firstName", "lastName"})
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "recipe_post_id", nullable = false )
-    @JsonIncludeProperties(value = {"id"})
+    @JsonIncludeProperties(value = {"id", "title","category"})
     private RecipePost recipePost;
 
     public Review(String message, int rating) {
