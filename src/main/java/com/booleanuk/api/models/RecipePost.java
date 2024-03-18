@@ -22,10 +22,10 @@ public class RecipePost {
     private String title;
 
     @Column
-    private ArrayList<String> ingredients;
+    private List<String> ingredients;
 
     @Column
-    private ArrayList<String> instructions;
+    private List<String> instructions;
 
     @Column
     private String category;
@@ -40,7 +40,7 @@ public class RecipePost {
     private String difficulty;
 
     @Column(name = "recipe_tags")
-    private ArrayList<String> recipeTags;
+    private List<String> recipeTags;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
@@ -53,7 +53,7 @@ public class RecipePost {
 
 
 
-    public RecipePost(String title, ArrayList<String> ingredients, ArrayList<String> instructions, String category, int bakingTime, int calories, String difficulty, ArrayList<String> recipeTags) {
+    public RecipePost(String title, List<String> ingredients, List<String> instructions, String category, int bakingTime, int calories, String difficulty, List<String> recipeTags) {
         this.title = title;
         this.ingredients = ingredients;
         this.instructions = instructions;
