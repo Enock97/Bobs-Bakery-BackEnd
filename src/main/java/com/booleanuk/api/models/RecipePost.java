@@ -43,10 +43,10 @@ public class RecipePost {
     @Column(name = "recipe_tags")
     private List<String> recipeTags;
 
-    @Column
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
-    @Column
+    @Column(name = "updated_at")
     private LocalDate updatedAt;
 
     @ManyToOne
