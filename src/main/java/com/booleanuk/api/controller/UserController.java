@@ -59,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<Response<?>> getUserByUsername(@PathVariable String username) {
         User user = this.userRepository.findByUsername(username).orElse(null);
         if (user == null) {
