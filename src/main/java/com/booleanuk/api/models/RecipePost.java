@@ -23,6 +23,9 @@ public class RecipePost {
     private String title;
 
     @Column
+    private String description;
+
+    @Column
     private List<String> ingredients;
 
     @Column
@@ -60,10 +63,11 @@ public class RecipePost {
 
 
 
-    public RecipePost(String title, List<String> ingredients, List<String> instructions,
+    public RecipePost(String title, String description, List<String> ingredients, List<String> instructions,
                       String category, int bakingTime, int calories, String difficulty,
                       List<String> recipeTags, LocalDate createdAt, LocalDate updatedAt) {
         this.title = title;
+        this.description = description;
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.category = category;

@@ -84,6 +84,7 @@ public class RecipePostController {
 
         // Update the post
         existingRecipePost.setTitle(recipePost.getTitle());
+        existingRecipePost.setDescription(recipePost.getDescription());
         existingRecipePost.setIngredients(recipePost.getIngredients());
         existingRecipePost.setInstructions(recipePost.getInstructions());
         existingRecipePost.setCategory(recipePost.getCategory());
@@ -91,6 +92,8 @@ public class RecipePostController {
         existingRecipePost.setCalories(recipePost.getCalories());
         existingRecipePost.setDifficulty(recipePost.getDifficulty());
         existingRecipePost.setRecipeTags(recipePost.getRecipeTags());
+        existingRecipePost.setCreatedAt(recipePost.getCreatedAt());
+        existingRecipePost.setUpdatedAt(recipePost.getUpdatedAt());
 
         try {
             existingRecipePost = this.recipePostRepository.save(existingRecipePost);

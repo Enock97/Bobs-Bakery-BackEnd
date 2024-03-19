@@ -99,7 +99,8 @@ public class ReviewController {
 
         existingReview.setMessage(reviewDetails.getMessage());
         existingReview.setRating(reviewDetails.getRating());
-        // Update other necessary fields
+        existingReview.setCreatedAt(reviewDetails.getCreatedAt());
+        existingReview.setUpdatedAt(reviewDetails.getUpdatedAt());
 
         try {
             existingReview = this.reviewRepository.save(existingReview);
