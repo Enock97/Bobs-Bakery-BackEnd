@@ -27,7 +27,12 @@ public class JwtUtils {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
+                .setSubject(String.valueOf(userPrincipal.getId())) // Use user ID as the subject
+                .claim("username", userPrincipal.getUsername()) // Add custom claim for username
+                .claim("email", userPrincipal.getEmail())
+                .claim("firstname", userPrincipal.getFirstname())
+                .claim("lastname", userPrincipal.getLastname())
+                .claim("favoritecolor", userPrincipal.getFavoritecolor())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + this.jwtExpirationMs))
                 .signWith(this.key(), SignatureAlgorithm.HS256)
