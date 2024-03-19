@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -23,6 +25,12 @@ public class Review {
     @Column
     private int rating;
 
+    @Column
+    private LocalDate createdAt;
+
+    @Column
+    private LocalDate updatedAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
     @JsonIncludeProperties(value = {"id", "firstName", "lastName"})
@@ -33,9 +41,11 @@ public class Review {
     @JsonIncludeProperties(value = {"id", "title","category"})
     private RecipePost recipePost;
 
-    public Review(String message, int rating) {
+    public Review(String message, int rating, LocalDate createdAt, LocalDate updatedAt) {
         this.message = message;
         this.rating = rating;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
 

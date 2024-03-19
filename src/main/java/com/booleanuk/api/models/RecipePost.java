@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,12 @@ public class RecipePost {
     @Column(name = "recipe_tags")
     private List<String> recipeTags;
 
+    @Column
+    private LocalDate createdAt;
+
+    @Column
+    private LocalDate updatedAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
     @JsonIncludeProperties(value = {"id", "firstName", "lastName"})
@@ -53,7 +60,9 @@ public class RecipePost {
 
 
 
-    public RecipePost(String title, List<String> ingredients, List<String> instructions, String category, int bakingTime, int calories, String difficulty, List<String> recipeTags) {
+    public RecipePost(String title, List<String> ingredients, List<String> instructions,
+                      String category, int bakingTime, int calories, String difficulty,
+                      List<String> recipeTags, LocalDate createdAt, LocalDate updatedAt) {
         this.title = title;
         this.ingredients = ingredients;
         this.instructions = instructions;
@@ -62,5 +71,7 @@ public class RecipePost {
         this.calories = calories;
         this.difficulty = difficulty;
         this.recipeTags = recipeTags;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
