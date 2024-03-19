@@ -59,6 +59,19 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
+    @GetMapping("/{username}")
+    public ResponseEntity<Response<?>> getUserByUsername(@PathVariable String username) {
+        User user = this.userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            ErrorResponse error = new ErrorResponse();
+            error.set("No user with that username were found");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+        UserResponse userResponse = new UserResponse();
+        userResponse.set(user);
+        return ResponseEntity.ok(userResponse);
+    }
+
     // Update a user
     @PutMapping("/{userId}")
     public ResponseEntity<Response<?>> updateUserById(@PathVariable int userId, @RequestBody User user) {
