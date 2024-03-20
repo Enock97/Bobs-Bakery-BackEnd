@@ -41,6 +41,17 @@ public class Review {
     @JsonIncludeProperties(value = {"id", "title","category"})
     private RecipePost recipePost;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDate.now();
+        updatedAt = LocalDate.now(); // Optionally set the same as createdAt
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDate.now();
+    }
+
     public Review(String message, int rating, LocalDate createdAt, LocalDate updatedAt) {
         this.message = message;
         this.rating = rating;

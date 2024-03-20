@@ -86,8 +86,12 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
 
-        // Check if the current user is the owner of the post
-        if (!existingUser.getUsername().equals(currentPrincipalName)) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOwner = existingUser.getUsername().equals(currentPrincipalName);
+
+        // Check if the current user is the owner of the post or admin
+        if (!(isOwner || isAdmin)) {
             ErrorResponse error = new ErrorResponse();
             error.set("Unauthorized to delete this user");
             return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
@@ -100,6 +104,7 @@ public class UserController {
         existingUser.setEmail(user.getEmail());
         existingUser.setRoles(user.getRoles());
 
+        existingUser = this.userRepository.save(existingUser);
         UserResponse userResponse = new UserResponse();
         userResponse.set(existingUser);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
@@ -115,12 +120,15 @@ public class UserController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
 
-        // Get the current authenticated user
+        // Get the current authenticated user and check if they have the admin role
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOwner = userToDelete.getUsername().equals(currentPrincipalName);
 
-        // Check if the current user is the owner of the post
-        if (!userToDelete.getUsername().equals(currentPrincipalName)) {
+
+        if (!(isOwner || isAdmin)) {
             ErrorResponse error = new ErrorResponse();
             error.set("Unauthorized to delete this user");
             return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);

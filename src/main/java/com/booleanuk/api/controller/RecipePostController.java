@@ -38,8 +38,20 @@ public class RecipePostController {
     @PostMapping
     public ResponseEntity<Response<?>> createRecipePost(@RequestBody RecipePost recipePost) {
         RecipePostResponse recipePostResponse = new RecipePostResponse();
+
+        // Extract username from the security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
         try {
-            recipePostResponse.set(this.recipePostRepository.save(recipePost));
+            // Find the user by username
+            User user = userRepository.findByUsername(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+
+            // Set the user to the recipe post
+            recipePost.setUser(user);
+
+            // Save the recipe post
+            RecipePost savedRecipePost = recipePostRepository.save(recipePost);
+            recipePostResponse.set(savedRecipePost);
         } catch (Exception e) {
             ErrorResponse error = new ErrorResponse();
             error.set("Could not create the recipe post, please check all required fields");
@@ -117,12 +129,15 @@ public class RecipePostController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
 
-        // Get the current authenticated user
+        // Get the current authenticated user and check if they have the admin role
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOwner = recipePostToDelete.getUser().getUsername().equals(currentPrincipalName);
 
-        // Check if the current user is the owner of the post
-        if (!recipePostToDelete.getUser().getUsername().equals(currentPrincipalName)) {
+
+        if (!(isOwner || isAdmin)) {
             ErrorResponse error = new ErrorResponse();
             error.set("Unauthorized to delete this post");
             return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);

@@ -25,11 +25,15 @@ public class RecipePost {
     @Column
     private String description;
 
-    @Column
-    private List<String> ingredients;
+    @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_post_id"))
+    @Column(name = "ingredients")
+    private List<String> ingredients = new ArrayList<>();
 
-    @Column
-    private List<String> instructions;
+    @ElementCollection
+    @CollectionTable(name = "recipe_instructions", joinColumns = @JoinColumn(name = "recipe_post_id"))
+    @Column(name = "instructions")
+    private List<String> instructions = new ArrayList<>();
 
     @Column
     private String category;
@@ -43,8 +47,10 @@ public class RecipePost {
     @Column
     private String difficulty;
 
-    @Column(name = "recipe_tags")
-    private List<String> recipeTags;
+    @ElementCollection
+    @CollectionTable(name = "recipe_tags", joinColumns = @JoinColumn(name = "recipe_post_id"))
+    @Column(name = "tags")
+    private List<String> recipeTags = new ArrayList<>();
 
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -61,6 +67,16 @@ public class RecipePost {
     @JsonIgnoreProperties(value = {"id", "recipePost"})
     public List<Review> reviews;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDate.now();
+        updatedAt = LocalDate.now(); // Optionally set the same as createdAt
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDate.now();
+    }
 
 
     public RecipePost(String title, String description, List<String> ingredients, List<String> instructions,

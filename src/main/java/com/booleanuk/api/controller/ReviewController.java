@@ -2,10 +2,12 @@ package com.booleanuk.api.controller;
 
 import com.booleanuk.api.models.RecipePost;
 import com.booleanuk.api.models.Review;
+import com.booleanuk.api.models.User;
 import com.booleanuk.api.payload.response.*;
 import com.booleanuk.api.repositories.RecipePostRepository;
 import com.booleanuk.api.repositories.ReviewRepository;
 import com.booleanuk.api.repositories.RecipePostRepository; // Assuming this exists for handling Post entity
+import com.booleanuk.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class ReviewController {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private RecipePostRepository recipePostRepository; // Assuming you have a PostRepository
@@ -37,6 +42,10 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Response<?>> createReview(@PathVariable int postId, @RequestBody Review review) {
+        // Extract username from the security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
         RecipePost recipePost = this.recipePostRepository.findById(postId).orElse(null);
         if (recipePost == null) {
             ErrorResponse error = new ErrorResponse();
@@ -45,6 +54,11 @@ public class ReviewController {
         }
 
         try {
+            // Find the user by username
+            User user = userRepository.findByUsername(currentUsername).orElseThrow(() -> new RuntimeException("User not found"));
+
+            // Set the user to the recipe post
+            review.setUser(user);
             review.setRecipePost(recipePost);
             Review savedReviewEntity = reviewRepository.save(review);
             ReviewResponse savedReview = new ReviewResponse();
@@ -128,9 +142,15 @@ public class ReviewController {
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
 
+        // Get the current authenticated user and check if they have the admin role
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        if (!reviewToDelete.getUser().getUsername().equals(currentPrincipalName)) {
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOwner = reviewToDelete.getUser().getUsername().equals(currentPrincipalName);
+
+
+        if (!(isOwner || isAdmin)) {
             ErrorResponse error = new ErrorResponse();
             error.set("Unauthorized to delete this review");
             return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
