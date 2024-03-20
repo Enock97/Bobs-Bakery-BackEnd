@@ -65,8 +65,8 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/posts/**", "/posts/*/reviews/**").authenticated() // Authenticated users can update their posts and reviews
                         .requestMatchers(HttpMethod.DELETE, "/posts/**", "/posts/*/reviews/**").authenticated() // Authenticated users can delete their posts and reviews
                         .requestMatchers(HttpMethod.GET, "/users/**").authenticated() // Authenticated users can view user details
-                        .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ROLE_ADMIN") // Only admins can update user details
-                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ROLE_ADMIN") // Only admins can delete users
+                        .requestMatchers(HttpMethod.PUT, "/users/**").authenticated() // Only admins can update user details
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated() // Only admins can delete users
                         .anyRequest().authenticated()
                 );
 
