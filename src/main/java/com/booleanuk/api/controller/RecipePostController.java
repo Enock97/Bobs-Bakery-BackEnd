@@ -106,6 +106,7 @@ public class RecipePostController {
         existingRecipePost.setRecipeTags(recipePost.getRecipeTags());
         existingRecipePost.setCreatedAt(recipePost.getCreatedAt());
         existingRecipePost.setUpdatedAt(recipePost.getUpdatedAt());
+        existingRecipePost.setImageUrl(recipePost.getImageUrl());
 
         try {
             existingRecipePost = this.recipePostRepository.save(existingRecipePost);

@@ -58,6 +58,9 @@ public class RecipePost {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
     @JsonIncludeProperties(value = {"id", "firstName", "lastName"})
