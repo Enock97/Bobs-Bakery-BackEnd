@@ -103,7 +103,7 @@ public class RecipePostController {
         existingRecipePost.setBakingTime(recipePost.getBakingTime());
         existingRecipePost.setCalories(recipePost.getCalories());
         existingRecipePost.setDifficulty(recipePost.getDifficulty());
-        existingRecipePost.setRecipeTags(recipePost.getRecipeTags());
+        existingRecipePost.setTags(recipePost.getTags());
         existingRecipePost.setCreatedAt(recipePost.getCreatedAt());
         existingRecipePost.setUpdatedAt(recipePost.getUpdatedAt());
         existingRecipePost.setImageUrl(recipePost.getImageUrl());

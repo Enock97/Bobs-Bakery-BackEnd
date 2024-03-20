@@ -3,6 +3,7 @@ package com.booleanuk.api.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,15 +26,11 @@ public class RecipePost {
     @Column
     private String description;
 
-    @ElementCollection
-    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_post_id"))
-    @Column(name = "ingredients")
-    private List<String> ingredients = new ArrayList<>();
+    @Column
+    private List<String> ingredients;
 
-    @ElementCollection
-    @CollectionTable(name = "recipe_instructions", joinColumns = @JoinColumn(name = "recipe_post_id"))
-    @Column(name = "instructions")
-    private List<String> instructions = new ArrayList<>();
+    @Column
+    private List<String> instructions;
 
     @Column
     private String category;
@@ -47,10 +44,8 @@ public class RecipePost {
     @Column
     private String difficulty;
 
-    @ElementCollection
-    @CollectionTable(name = "recipe_tags", joinColumns = @JoinColumn(name = "recipe_post_id"))
-    @Column(name = "tags")
-    private List<String> recipeTags = new ArrayList<>();
+    @Column
+    private List<String> tags;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
@@ -84,7 +79,7 @@ public class RecipePost {
 
     public RecipePost(String title, String description, List<String> ingredients, List<String> instructions,
                       String category, int bakingTime, int calories, String difficulty,
-                      List<String> recipeTags, LocalDate createdAt, LocalDate updatedAt) {
+                      List<String> tags, LocalDate createdAt, LocalDate updatedAt) {
         this.title = title;
         this.description = description;
         this.ingredients = ingredients;
@@ -93,7 +88,7 @@ public class RecipePost {
         this.bakingTime = bakingTime;
         this.calories = calories;
         this.difficulty = difficulty;
-        this.recipeTags = recipeTags;
+        this.tags = tags;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
