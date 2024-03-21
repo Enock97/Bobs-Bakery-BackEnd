@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
+@CrossOrigin(origins = "https://bobs-bakery-front-end.vercel.app/", maxAge = 3600)
+
 @RequestMapping("/users")
 public class UserController {
 

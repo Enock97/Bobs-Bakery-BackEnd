@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "https://bobs-bakery-front-end.vercel.app/", maxAge = 3600)
+
 @RequestMapping("/posts/{postId}/reviews")
 public class ReviewController {
 
