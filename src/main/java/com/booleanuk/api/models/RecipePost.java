@@ -26,10 +26,10 @@ public class RecipePost {
     @Column
     private String description;
 
-    @Column
+    @Column(length = 3000)
     private List<String> ingredients;
 
-    @Column
+    @Column(length = 3000)
     private List<String> instructions;
 
     @Column
@@ -53,7 +53,7 @@ public class RecipePost {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", length = 1500)
     private String imageUrl;
 
     @ManyToOne
