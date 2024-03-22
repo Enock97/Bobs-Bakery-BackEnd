@@ -33,7 +33,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false )
-    @JsonIncludeProperties(value = {"id", "firstName", "lastName"})
+    @JsonIncludeProperties(value = {"id", "firstName", "lastName", "favoriteColor"})
     private User user;
 
     @ManyToOne
