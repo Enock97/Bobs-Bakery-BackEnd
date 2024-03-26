@@ -69,7 +69,6 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated() // Authenticated users can delete users
                         .anyRequest().authenticated()
                 );
-
         http.authenticationProvider(this.authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
